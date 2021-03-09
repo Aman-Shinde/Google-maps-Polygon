@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Polygon</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=<YOUR API KEY>&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+<script>
+var map;
+var infoWindow;
+var clickablePolygons = [];
+/*below Function is used to create polygon, later on we call this function and pass array of coordinate and message for infowindow */
+function createPolygon(path, stateName)
+{
+    var poly = new google.maps.Polygon({
+        paths: path,
+        strokeColor: "red",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "Green",
+          fillOpacity: 0.35,
+    });
+    clickablePolygons.push(poly);
+    google.maps.event.addListener(poly, "click", function (event) {
+    infoWindow.setContent("This polygon is: " + stateName);
+        infoWindow.setPosition(event.latLng);
+        infoWindow.open(map);
+    });
+    poly.setMap(map);
+}
+/*initmap function is used to display map*/
+function  initMap() 
+{
+    var myLatLng = new google.maps.LatLng(18.598256,73.768835);
+    var mapOptions = {
+        zoom: 13,
+        center: myLatLng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+
+    var polygon1 = [
+          { lat: 18.590447,lng:73.757669},
+          { lat: 18.591423,lng:73.784370},
+          { lat: 18.612410,lng:73.784027},
+          { lat: 18.606554,lng:73.757233},
+        ];
+    var polygon2 = [
+          { lat: 18.590447,lng:73.757669},
+          { lat: 18.591423,lng:73.784370},
+          { lat: 18.570433,lng:73.789883},
+          { lat: 18.568968,lng:73.759654},
+        ];
+    var polygon3 = [
+          { lat: 18.621032,lng:73.792631},
+          { lat: 18.606228,lng:73.795363},
+          { lat: 18.610295,lng:73.819237},
+          { lat: 18.624611,lng:73.814771},
+        ];
+    var polygon4 = [
+          { lat: 18.591748,lng: 73.786603},
+          { lat: 18.595165,lng: 73.807042},
+          { lat: 18.581335,lng: 73.814943},
+          { lat: 18.578894,lng: 73.791412},
+        ];
+
+    map = new google.maps.Map(document.getElementById('map'),mapOptions);
+
+    infoWindow = new google.maps.InfoWindow();
+
+    createPolygon( polygon1, "polygon1");
+    createPolygon( polygon2, "polygon2");
+    createPolygon( polygon3, "polygon3");
+    createPolygon( polygon4, "polygon4");
+
+   
+}
+</script>
+</head>
+<body>
+  <div id="results"></div>
+  <div id="map"></div>
+</body>
+</html>
